@@ -1,0 +1,51 @@
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js" /></script>
+<script type="text/javascript">$(document).ready(function() {
+    $('.orand').hide(); // on cache le champ par défaut
+    $('.witout').hide(); // on cache le champ par défaut
+    $('select[name="met"]').change(function() { // lorsqu'on change de valeur dans la liste
+    var valeur = $(this).val(); // valeur sélectionnée
+
+        if(valeur != 'met') { // si non vide
+            if(valeur == 'id') {
+                $('.orand').hide();
+                $('.witout').hide();
+            } else if (valeur == 'keywords'){
+                $('.orand').show();
+                $('.witout').show();
+            } else {
+                $('.orand').show();
+                $('.witout').hide();
+            }                
+        }
+    });
+
+});
+</script>
+
+{% extends 'bones.html' %}
+
+{% block title %}Search in Database{% endblock %}
+
+{% block main %}
+    <div class="form_settings">
+        <h1>Search pictures or annotations </h1>
+        <form method="post" enctype="multipart/form-data">
+            <p><span>Search with : </span> <select name="met">
+                  <option value="menu">-- Choose --</option>
+                  <option value="keywords">Picture keywords</option>
+                  <option value="annotation">Annotation keywords</option>
+                  <option value="id">Examination ID</option>
+            </select></p>
+            <p style="padding-top: 15px"><span>&nbsp;</span><textarea name="words" rows="3" cols="15"></textarea></p><br/><br/>
+            <p class="orand" style="padding-top: 15px"> Word search option example : OR = word1 or word 2 -- AND = word1 and word2
+            <p class="orand" style="padding-top: 15px"><label for="or"><span>OR</span></label><input type="radio" name="orand" value="or" id="or" checked="checked"></p>
+            <p class="orand" style="padding-top: 15px"><label for="and"><span>AND</span></label><input type="radio" name="orand" value="and" id="and"></p>
+            <br/><br/>
+            <p class="orand" style="padding-top: 15px"> Select picture with or without annotations
+            <p class="witout" style="padding-top: 15px"><label for="wi"><span>Both</span></label><input type="radio" name="withorwithout" value="all" id="all" checked="checked"></p>
+            <p class="witout" style="padding-top: 15px"><label for="wi"><span>With annotations</span></label><input type="radio" name="withorwithout" value="wi" id="wi"></p>
+            <p class="witout" style="padding-top: 15px"><label for="wo"><span>Without annotations</span></label><input type="radio" name="withorwithout" value="wo" id="wo"></p>
+            <p style="padding-top: 15px"><span>&nbsp;</span><input id="btsub" type="submit" value="Search" /></p>
+        </form>
+    </div><!--close form_settings-->
+{% endblock %}

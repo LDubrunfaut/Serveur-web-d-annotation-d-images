@@ -1,0 +1,47 @@
+{% extends 'bones.html' %}
+
+{% block title %}Home Page{% endblock %}
+
+{% block main %}
+  <div>
+    <h1> Welcome to our website </h1>
+    <p> Welcome on my site, let me introduce you teleradiology with the following questions for which wikipédia give an answer.<br />
+    Because of the deadline of this project some features aren't implemented, sorry by advance if you can't do everything you want to do.<br />
+    Even if the login interface is not implemented every pictures and annotations must have an author.
+    This site is supposed to be a plateform where two kind of professionals have access :<br /> </p>
+    <ul>
+        <li>Clinical technicians : Upload pictures coming from RMI examination.</li>
+        <li>Radiologic expert : Annotate pictures.</li>
+    </ul>
+    <p>In the aim to be realist every picture must have been taken during an examination. <br />
+    In the database there are three examinations added by default to be used in the context of this project.<br />
+    To upload picture you are forced to give an examination id, only 1, 2 and 3 are available in this project version.<br /><br />
+    This site had been created with <a href="https://www.python.org/">Python</a> language using <a href="http://flask.pocoo.org/">Flask module</a> and <a href="https://www.sqlite.org/">Sqlite3</a> database.<br /><br />
+    </p>
+  </div>
+
+  <div class="content_container">
+    <h2> What is telemedecine ? </h2>
+    <p>Telemedicine is the use of telecommunication and information technology to provide clinical health care from a distance.</p>
+  	<div class="button_small">
+      <a href="https://en.wikipedia.org/wiki/Telemedicine">Read more</a>
+    </div><!--close button_small-->
+  </div>
+
+  <div class="content_container">
+    <h2> What is teleradiology ? </h2>
+    <p>Teleradiology is the transmission of radiological patient images, such as MRIs but also as x-rays and CTs.</p>
+  	<div class="button_small">
+      <a href="https://en.wikipedia.org/wiki/Teleradiology">Read more</a>
+    </div><!--close button_small-->
+  </div>
+
+  <div class="content_container">
+    <h2> What is MRI ? </h2>
+    <p>Magnetic resonance imaging (MRI) is a medical imaging technique used in radiology to image the anatomy and the physiological processes of the body in both health and disease..</p>
+  	<div class="button_small">
+      <a href="https://en.wikipedia.org/wiki/Magnetic_resonance_imaging">Read more</a>
+    </div><!--close button_small-->
+  </div>
+
+{% endblock %}
