@@ -1,0 +1,146 @@
+{% extends 'bones.html' %}
+
+{% block title %}Search Result{% endblock %}
+
+{% block main %}
+    {% if liste_obj == [] %}
+        {% if type_obj == 'img' %}
+            <h1>No picture available for your search.</h1>
+        {% else %}
+            <h1>No annotation available for your search.</h1>
+        {% endif %}
+    {% else %}
+        <table class="tab2" border=1 frame=void rules=rows>
+        <tr>
+            <td colspan="6"> 
+            <h1> Search Results </h1>
+            </td>
+        </tr>
+        {% for obj in liste_obj %}
+            <tr>
+                <td class="left_img">
+                    <a href= "{{ url_for('picture_profil', nom_img=obj['nom_img']) }}"> <img src="/{{ obj['path_thumb'] }}" style="PADDING-TOP: 10px" title="{{ obj['nom_img'] }}" alt="{{ obj['path_thumb'] }}"/> </a>
+                </td>
+                <td style="vertical-align: top">
+                    <table>
+                        <tr>
+                            <td> 
+                                {% if type_obj == 'img' %}
+                                    <h3> Name : {{ obj['nom_img'] }} </h3>
+                                {% else %}
+                                    <h3> Picture name : {{ obj['nom_img'] }} </h3>
+                                    <h3> Annotation number {{ obj['id'] }} </h3>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td  >
+                                <h3> Author : {{ obj['auteur'] }} </h3>
+                            </td>
+                        </tr>
+                        {% if type_obj == 'img' %}        
+                            <tr>
+                                <td  > 
+                                    <h3> Examination ID : {{ obj['id_examen'] }} </h3>
+                                </td>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <td  > 
+                                <h3> Creation date :</h3> 
+                                {{ obj['creation_date'] }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td  > 
+                                 {% if obj['creation_date'] != obj['modification_date'] %}
+                                    <h3> Modification date :</h3> 
+                                    {{ obj['modification_date'] }}
+                                 {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td >
+                                <h3> Keywords list </h3>
+                            </td>
+                        </tr>
+                        {% for kw in obj['keywords'] %}
+                            <tr>
+                                <td >
+                                    {{ kw }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tr>
+                    </table>
+                </td>
+                {% if type_obj == 'img' %}
+                    <td >
+                        <h3> Pisture's annotations list </h3>
+                        {% if obj['annotations'] != [] %}
+                            {% for annotation in obj['annotations'] %}    
+                                <table>
+                                    <tr>
+                                        <td > 
+                                            Author : {{ annotation['auteur'] }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td > 
+                                            Creation date : {{ annotation['creation_date'] }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td > 
+                                            {% if annotation['creation_date'] != annotation['modification_date'] %}
+                                                Modification date : {{ annotation['modification_date'] }}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td > Annotation's keywords list :
+                                            <table> 
+                                             {% for kw in annotation['keywords'] %}
+                                                <tr>
+                                                    <td >
+                                                        {{ kw }}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    ---------------
+                            {% endfor %}
+                            </table>
+                        {% endif %}
+                    </td >
+                {% endif %}
+                {% if type_obj == 'img' %}
+                    <td class = "right_text">
+                        <a href= "{{ url_for('modification', nom_img=obj['nom_img'], option='img', id_ano=0, kw_modif=obj['keywords']|join(';'), path=obj['path_thumb']|replace('/',';')) }}"> <img src="/static/site_image/modifier.png" alt="Edit" title="Edit"/> </a>
+                    </td>
+                    <td class = "right_text">
+                        <a href= "{{ url_for('delete', nom_img=obj['nom_img'], option='img', id_ano=0, annotation=0, path=obj['path_thumb']|replace('/',';')) }}"> <img src="/static/site_image/delete.png" alt="Delete" title="Delete"/> </a>
+                    </td>
+                    <td class = "right_text">
+                        {% if obj['path_ano'] != 'EMPTY'%}
+                          <a href= "{{ url_for('add_annotation', nom_img=obj['nom_img'], path=obj['path_ano']|replace('/',';')) }}"> <img src="/static/site_image/annotation.png" alt="Annotation" title="Annotation"/> </a>
+                        {% else %}
+                          <a href= "{{ url_for('add_annotation', nom_img=obj['nom_img'], path=obj['path_image']|replace('/',';')) }}"> <img src="/static/site_image/annotation.png" alt="Annotation" title="Annotation"/> </a>
+                        {% endif %}
+                    </td>          
+                {% else %}
+                    <td class = "right_text">
+                        <a href= "{{ url_for('modification', nom_img=obj['nom_img'], option='ano', id_ano=obj['id'],kw_modif=obj['keywords']|join(';'), path=obj['path_thumb']|replace('/',';')) }}"> <img src="/static/site_image/modifier.png" alt="Edit" title="Edit"/> </a>
+                    </td>
+                    <td class = "right_text">
+                        <a href= "{{ url_for('delete', nom_img=obj['nom_img'], option='ano',id_ano=obj['id'], path=obj['path_thumb']|replace('/',';'), annotation=obj['keywords']|join(';')) }}"> <img src="/static/site_image/delete.png" alt="Delete" title="Delete"/> </a>
+                    </td>
+                {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% endif %}
+{% endblock %}

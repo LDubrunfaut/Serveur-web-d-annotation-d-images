@@ -1,0 +1,29 @@
+{% extends 'bones.html' %}
+
+{% block title %}Edit{% endblock %}
+
+{% block main %}
+    <div class="form_settings">
+        <table class="tab">
+            <tr>
+                <td>
+                    {% if option == 'img' %}
+                        <img src="/{{ path }}" title="{{ nom_img }}" alt="{{ path }}"/>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if option == 'img' %}
+                        <h1>Edit keywords of picture {{ nom_img }}</h1> <br />
+                    {% else %}
+                        <h1>Edit annotation's keywords of picture : {{ nom_img }}</h1> <br />
+                    {% endif %}
+                    <form method="post" enctype="multipart/form-data">
+                        <p style="padding-top: 15px"><textarea name="keywords" rows="3" cols="15"> {{ keys|replace(';','\n') }} </textarea> </p><br/><br/>
+                        <p style="padding-top: 15px"><input type="button" value="Edit" name="yes" onClick="form.submit();" /></p>
+                        <p style="padding-top: 15px"><input type="button" value="Cancel" name="no"onClick="document.location.href = '{{ url_for('picture_profil', nom_img=nom_img) }}';" /></p>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div><!--close form_settings-->
+{% endblock %}
