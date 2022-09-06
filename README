@@ -1,0 +1,219 @@
+  *******************************************************************
+  *   Serveur web de gestion et d’annotation d'images biologiques   *
+  *******************************************************************
+
+    L'objectif de ce projet était de mettre en place un serveur de gestion et 
+d'annotation d'images biologiques. Il fallait que chaque image enregistrée
+puisse avoir des mots clés associés permettant de rechercher par la suite des 
+images en saisissant leurs mots clés. De plus sur une image il fallait pouvoir
+selectionner une zone rectangulaire à laquelle des mots clés étaient associés,
+l'ensemble des deux formant une annotation d'une image. Les images et 
+annotations devaient pouvoir être modifiées ou supprimées par l'utilisateur.
+
+      *****************
+ I *** GETTING STARTED ***
+      *****************
+     
+  * PREREQUISITIES *
+
+    Ce projet a été développé sur Ubuntu 14.04 en utilisant Python 2.7.6 
+    (disponible :https://www.python.org/download/releases/2.7.6/ ) avec les 
+    versions des modules/librairies suivants :
+    _ flask : 0.11.1 (disponible : https://pypi.python.org/pypi/Flask/0.11 )
+    _ sqlite3 : 2.6.0 (commande : pip install pysqlite )
+    _ PIL : 1.1.7 (PILLOW : 2.3.0) (commande : sudo apt-get install python-PIL )
+    _ pygame : 1.9.1 (disponible dans le dernier commentaire : 
+                        https://forum.ubuntu-fr.org/viewtopic.php?id=190902 )
+    La partie html a été testée sur les navigateurs Mozilla Firefox 47.0 et 
+    Google Chrome 52.0.2743.116
+
+  * INSTALLING *
+  
+    Voici les instructions pour faire tourner le programme sur votre machine:
+    
+    1) Arborescence
+       Vous devez respecter la hiérarchie suivante :
+       
+        DUBRUNFAUT.lucie/
+            app.py :        Fichier contenant le coeur du programme
+            my_library.py : Fichier contenant les fonctions auxilliaires qu'
+                            utilise app.py
+            data.db :       Base de donnée contenant les informations du serveur
+            create_db.py :  Fichier permettant de re-initialiser data.db
+                                // Permet de voir la structure des tables
+            db_view.py :    Fichier permettant de consulter data.db sans passer
+                            par app.py
+            templates/
+                - Les fichiers ayant une extension .html doivent tous s'y trouver
+            static/
+                analyses/    -- Vide -- Perspectives de développement du projet
+                protocoles/  -- Vide -- Perspectives de développement du projet
+                css/                    Contient les codes css du projet
+                js/                     Contient les codes javascript du projet
+                site_image/             Contient les images utiles pour le css
+                images/
+                    - Contient les images enregistrées par le serveur
+                    thumb/              Contient les miniatures des images
+                    ano/                Contient les images annotées
+            data/
+                - Le dossier data contient les images qu'on se propose d'
+                  enregistrer sur le serveur et d'annoter.
+
+    2) Lancement du programme 
+       Vous devez ouvrir un terminal, ensuite vous avez deux façon de lancer le 
+       programme, soit :
+       
+            python app.py       soit        ./app.py 
+       
+       Ces deux commandes permettent de démarer le serveur en local. Si la
+       seconde ne fonctionne pas faites chmod +x app.py et recommencez.
+       
+       Pour accéder au contenu de celui-ci vous devez ouvrir un navigateur (de
+       préférence Firefox ou Google chrome) et entrer l'adresse suivante :
+       
+            http://127.0.0.1:5000/ 
+            
+       Ensuite vous pouvez naviguer, oyez moussaillons. 
+
+       *************
+ II *** UTILIZATION ***
+       *************
+
+   * FEATURES *
+   
+   Lorsque vous lancez le navigateur et que vous êtes sur le lien indiqué 
+   ci-dessus vous arrivez sur la page principale qui vous explique l'intérêt
+   du site mais aussi quelques consignes pour l'utilisation du serveur. Pour de
+   plus amples informations sur le thème quelques liens sont fournies.
+   
+   La barre de menu en haut va vous permettre de naviguer vers les principales 
+   fonctionnalités du serveur :
+   
+    1) Picture upload
+    
+       Affiche une formulaire permettant d'enregistrer sur le serveur une image,
+       pensez à bien saisir tous les champs sinon l'enregistrement ne sera pas
+       possible. Choisissez les images dans le dossier du projet puis dans le 
+       dossier data comme indiqué précédemment. Faites attention aux id d'examen
+       il faut respecter les instructions de la page principale.
+       
+            Exemple d'enregistrement d'image
+            fichier : DUBRUNFAUT.lucie/data/normal (copie1).jpg
+            autre : Dubrunfaut
+            keywords : RMI normal brain
+            examination id : 1
+            
+      Vous arrivez sur une page de profil de l'image qui contient les
+      différentes informations associée à l'image dans la base de donnée,
+      d'après votre saisie mais pas seulement.
+      Vous remarquerez les trois icônes en haut à droites qui ont pour fonction:
+        - Modifier les mots clés de l'image
+        - Supprimer l'image
+        - Annoter l'image
+       
+    2) Annoter l'image
+    
+      L'image est affiché et on peut sélectionner une zone de celle-ci avec le
+      viseur, les coordonnées du cadre se remplissent automatiquement dans le
+      formulaire en dessous et vous pouvez modifier la taille du rectangle ainsi 
+      que le faire glisser sur l'image. Pour enregistrer l'annotation il faut 
+      remplir tous les champs. 
+      Lorsque vous ajouter l'annotation, la page se refresh et vous pouvez voir
+      le rectangle coloré et sa légende qui sont associés à votre annotation.
+      Remarque : Si l'image ne se met pas à jour faites F5 ou actualisez la page
+      pour rafraîchir votre cache mémoire.
+      Si vous faites retour vous retournez sur la page de profil de l'image et 
+      la ou les annotations réalisées apparaissent. Vous pouvez modifier leurs 
+      mots clés ou les supprimer.
+    
+    3) Search
+    
+      La page search vous propose de recherche des images ou des annotations en
+      saisissant pour les images soit des id d'examen soit des mots-clés, dans
+      le cas des annotations seulement par mot-clés.
+      
+      --- Rechercher des annotations ---
+      
+      Si vous cherchez des annotations vous avez la possibilité de choisir si
+      la recherche va chercher pour plusieurs mots clés les annotations ayant l'
+      un ou l'autre de ces mots clés (option or) ou si elle va chercher les 
+      annotations ayant tous les mots clés saisis (option and).
+      
+      La page des résultats de recherche vous affiche une liste d'annotations
+      dont les mots clés correspondent à votre requête, mais affiche aussi d'
+      autres informations sur chaque annotation. Vous avez la possibilité pour
+      chacune de les supprimer ou de modifier leurs mots clés.
+
+      --- Rechercher des images par mot-clé ---
+      
+      Si vous cherchez des mots-clés d'une image vous avez également cette 
+      option. Mais également la possibilité de choisir si vous cherchez des 
+      images uniquement avec des annotations, uniquement sans annotations ou
+      avec et sans annotations.
+      
+            Exemple de recherche :
+            Picture keywords : RMI
+            OR / AND : OR
+            WITH / WITHOU / BOTH : BOTH
+      
+      La page des résultats de recherche vous affiche une liste d'images dont 
+      les mots clés correspondent à votre requête, mais affiche aussi d'
+      autres informations sur chaque image. Vous avez la possibilité pour
+      chacune de les supprimer, de modifier leurs mots clés et de leur ajouter
+      des annotations.  
+    
+    4) Sources
+       
+       Affiche une page contenant les liens vers les sources des images
+       utilisées dans le cadre de ce projet. Ces images ont ensuite été
+       redécoupée pour avoir plusieurs images pour un seul examen.
+
+   * RESOURCES *
+   
+     Voici la liste des ressources extérieures qui ont été utilisées pour 
+     réaliser ce projet.
+   
+    1) Utilisation de Flask :
+       https://openclassrooms.com/courses/creez-vos-applications-web-avec-flask/presentation-de-flask
+       
+    2) Utilisation de Sqlite3 :
+       http://www.tutorialspoint.com/sqlite/sqlite_python.htm 
+    
+    3) Fonction python permettant de redimensionner les images :
+       https://opensource.com/life/15/2/resize-images-python
+       
+    4) Fonction javascript permettant de cacher certains champs :
+       https://openclassrooms.com/forum/sujet/afficher-un-input-sur-choix-d-une-liste-deroulante-36903
+       
+    5) Réalisation d'un canvas pour l'annotation et récupération des coordonnées
+       de la zone sélectionnée :
+       http://deepliquid.com/content/Jcrop.html
+       
+    6) Fonction python permettant de transformer un string en int :
+       http://stackoverflow.com/questions/12020821/python-int-function
+       
+    7) Base du squelette css et en partie javascript de ce projet :
+       http://www.justfreetemplates.com/web-templates/view/3200.html
+
+       *********
+ III *** AUTHOR :***
+       *********
+    
+    Date du projet : 20/09/2016
+    DUBRUNFAUT Lucie
+    2ème année de Master Biologie Informatique / Bioinformatique
+    Université Paris 7 Diderot
+
+       *****************
+ IV *** ACKNOWLEDGMENTS ***
+       *****************
+
+    Je tiens à remercier les étudiants de M2BI qui étaient également en projet
+    court avec moi pour leur présence stimulantes. Plus particulièrement je 
+    souhaiterais remercier Hélène BORGES, Mélissa N'DEBI et Florence JORNOD qui
+    travaillaient sur le même projet que moi et dont l'aide m'a souvent été très
+    précieuse notamment pour corriger parfois des erreurs que je ne voyais pas
+    après des heures de debuggage. Mais aussi pour les discussions que nous
+    avons pu avoir sur la conception de nos projets respectifs qui ont toujours
+    été très intéressantes. Et pour finir je remercier Antoine GAUTEREAU pour
+    m'avoir soutenu lorsque je travaillais chez moi.
